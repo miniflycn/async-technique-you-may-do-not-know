@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Test</title>
+    <script src="../lib/zone.js"></script>
+    <script src="../lib/loader.js"></script>
+</head>
+<body>
+<p>F11，然后看看是否符合预期！</p>
+<script>
+// 模拟jsonp数据
+define('data@forA', {
+    msg: 'hello i am data for A'
+})
+define('data@forB', {
+    message: 'hello i am data for B'
+})
+
+// 要运行的第一段代码
+define('A', function A() {
+    // 组件以前的数据来自window.data.msg，
+    // 为了解耦，代码重构解决
+    console.log(window.data.msg);
+})
+
+// 要运行的第二段代码
+define('B', function B() {
+    // 同上组件以前的数据来自window.data.message，
+    // 为了解耦，代码重构解决
+    console.log(window.data.message);
+})
+
+// 载入依赖
+require.config({
+    dep: {
+        A: {
+            'data': 'forA'
+        },
+        B: {
+            'data': 'forB'
+        }
+    }
+})
+
+
+require('A')
+require('B')
+</script>
+</body>
+</html>
